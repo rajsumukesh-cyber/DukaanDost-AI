@@ -1,0 +1,22 @@
+[12/03/26, 09:14:22] Ramesh Kumar: Namaste Sharma ji, dukaan khul gayi kya?
+[12/03/26, 09:15:05] Sharma General Store: Namaste Ramesh bhai! Haan dukaan subah 7:30 baje se raat 10:30 baje tak khuli rehti hai.
+[12/03/26, 09:16:10] Ramesh Kumar: Sunday ko bhi open rehti hai kya?
+[12/03/26, 09:16:45] Sharma General Store: Haan bhai, Sunday ko bhi dukaan poora din khulti hai, 8:00 AM se 10:00 PM.
+[12/03/26, 11:30:15] Priya Verma: Bhaiya Amul Taaza milk packet available hai kya?
+[12/03/26, 11:31:02] Sharma General Store: Haan bhenji, Amul Taaza aur Amul Gold dono fresh stock mein available hain.
+[12/03/26, 11:32:40] Priya Verma: Amul Butter 500g ka rate kya hai?
+[12/03/26, 11:33:12] Sharma General Store: Amul Butter 500g ₹275 ka hai aur 100g packet ₹58 ka hai.
+[12/03/26, 14:20:00] Amit Singh: Bhaiya home delivery mil sakti hai Sector 4 mein?
+[12/03/26, 14:21:18] Sharma General Store: Haan bilkul, 2 km ke radius mein free home delivery hai ₹300 se upar ke order par. ₹300 se kam par ₹20 delivery charge lagta hai.
+[12/03/26, 14:22:45] Amit Singh: Delivery kitne time mein aa jayegi?
+[12/03/26, 14:23:30] Sharma General Store: Order confirm hone ke 30 se 45 minutes mein delivery ho jaati hai.
+[12/03/26, 16:05:10] Sunita Devi: Online payment le lete ho? Google Pay ya PhonePe?
+[12/03/26, 16:05:55] Sharma General Store: Haan ji, Google Pay, PhonePe, Paytm, QR code scan aur Cash on Delivery (COD) sab chalta hai. UPI ID: sharmastore@upi
+[12/03/26, 17:15:20] Vikas Gupta: Bhaiya Fortune Mustard Oil 1 Litre pouch kitne ka hai?
+[12/03/26, 17:16:05] Sharma General Store: Fortune Kachi Ghani Mustard Oil 1L pouch ₹142 ka hai.
+[12/03/26, 17:17:11] Vikas Gupta: Aashirvaad Shudh Chakki Atta 10kg ka kya rate hai?
+[12/03/26, 17:18:00] Sharma General Store: Aashirvaad Atta 10kg ₹410 ka hai aur 5kg pouch ₹215 ka hai.
+[12/03/26, 19:40:12] Rohit Mehra: Aapki dukaan ka exact location kahan pe hai?
+[12/03/26, 19:41:00] Sharma General Store: Hamari dukaan Shop No. 14, Main Market, Near SBI ATM, Sector 4, Noida mein hai.
+[12/03/26, 20:10:05] Meena Sharma: Daal aur chawal khula (loose) milta hai ya packed?
+[12/03/26, 20:11:00] Sharma General Store: Dono milte hain ji. High quality loose daal aur Tata Sampann packed daalein dono stock mein hain.

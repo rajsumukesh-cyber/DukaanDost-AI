@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DukaanDost - Voice-Based Local Language FAQ AI for Small Shops</title>
+    <meta name="description" content="AI-powered WhatsApp & Voice FAQ assistant for local Indian shopkeepers and small businesses with zero-setup Auto-FAQ generation and owner fallback.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Main Navigation Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <div class="logo-badge">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div>
+                    <div class="logo-title">
+                        DukaanDost <span style="color: #25D366; font-size: 1.1rem;">दुकान दोस्त</span>
+                    </div>
+                    <div class="logo-subtitle">Voice & WhatsApp FAQ AI for Small Indian Retailers</div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <!-- Preset Shop Switcher -->
+                <div class="shop-selector-group">
+                    <i class="fa-solid fa-store" style="color: #25D366;"></i>
+                    <span class="shop-selector-label">Active Store:</span>
+                    <select id="active-shop-select" class="shop-select" onchange="window.dukaanApp.switchShop(this.value)">
+                        <option value="kirana">🛒 Sharma Kirana & General Store (Noida)</option>
+                        <option value="pharmacy">💊 Gupta Medicos & Pharmacy (Lucknow)</option>
+                        <option value="garments">👗 Radhika Ethnic Boutique (Jaipur)</option>
+                        <option value="hardware">🔧 Verma Hardware & Electricals (Meerut)</option>
+                        <option value="bakery">🎂 Agarwal Sweets & Bakery (Kanpur)</option>
+                        <option value="mobile_repair">📱 Star Telecom & Mobile Care (Aligarh)</option>
+                        <option value="stationery">📚 Student Corner Stationery & Xerox (Dehradun)</option>
+                        <option value="south_indian">🥥 Murugan Stores & Provisions (Chennai)</option>
+                    </select>
+                </div>
+
+                <!-- Language Toggle -->
+                <div class="shop-selector-group">
+                    <i class="fa-solid fa-language" style="color: #53BDEB;"></i>
+                    <select id="bot-language-select" class="shop-select" onchange="window.dukaanApp.changeLanguage(this.value)">
+                        <option value="hinglish">Hinglish (Hindi + English)</option>
+                        <option value="hi">हिंदी (Pure Hindi)</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+
+                <!-- Status Badge -->
+                <div class="pill-badge live">
+                    <span class="pulse-dot"></span>
+                    <span>AI Webhook Active</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid Layout -->
+    <main class="main-wrapper">
+        
+        <!-- Left Side: Shopkeeper Control Hub -->
+        <section class="dashboard-panel">
+            <!-- Tabs Navigation -->
+            <nav class="tabs-nav">
+                <button class="tab-btn active" onclick="window.dukaanApp.showTab('faqs', this)">
+                    <i class="fa-solid fa-book-open"></i> FAQ Knowledge Base
+                    <span class="tab-badge" id="faq-count-badge">7</span>
+                </button>
+                <button class="tab-btn" onclick="window.dukaanApp.showTab('auto-generator', this)">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: #FF7A00;"></i> Auto-FAQ Extractor
+                    <span class="tab-badge" style="background: rgba(255, 122, 0, 0.2); color: #FF7A00;">New</span>
+                </button>
+                <button class="tab-btn" onclick="window.dukaanApp.showTab('fallback-inbox', this)">
+                    <i class="fa-solid fa-inbox"></i> Owner Inbox
+                    <span class="tab-badge" id="fallback-count-badge" style="background: #EF4444; color: #fff;">0</span>
+                </button>
+                <button class="tab-btn" onclick="window.dukaanApp.showTab('store-profile', this)">
+                    <i class="fa-solid fa-sliders"></i> Store Rules
+                </button>
+                <button class="tab-btn" onclick="window.dukaanApp.showTab('analytics', this)">
+                    <i class="fa-solid fa-chart-pie"></i> Analytics
+                </button>
+            </nav>
+
+            <!-- Tab 1: FAQs Knowledge Base -->
+            <div id="tab-faqs" class="tab-pane active">
+                <!-- Shop Header Summary Card -->
+                <div class="shop-hero-card" id="shop-hero-card">
+                    <img id="shop-hero-avatar" class="shop-avatar" src="" alt="Shop Avatar">
+                    <div>
+                        <div class="shop-meta-title" id="shop-hero-name">Sharma Kirana & General Store</div>
+                        <div class="shop-meta-tagline" id="shop-hero-tagline">Aapki Apni Pados Ki Dukaan 🛒</div>
+                        <div class="shop-meta-details">
+                            <span><i class="fa-regular fa-clock"></i> <span id="shop-hero-timings">7:30 AM - 10:30 PM</span></span>
+                            <span><i class="fa-solid fa-truck-fast"></i> Min Order: <span id="shop-hero-delivery">₹300</span></span>
+                            <span><i class="fa-solid fa-qrcode"></i> UPI: <span id="shop-hero-upi">sharmastore@upi</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pane-header">
+                    <div>
+                        <h2 class="pane-title"><i class="fa-solid fa-layer-group" style="color: #25D366;"></i> Store Knowledge Base</h2>
+                        <p class="pane-desc">The AI answers customer calls and WhatsApp voice notes based on these verified FAQs.</p>
+                    </div>
+                    <button class="btn-primary" onclick="window.dukaanApp.openAddFaqModal()">
+                        <i class="fa-solid fa-plus"></i> Add New FAQ
+                    </button>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="faq-filter-bar">
+                    <button class="filter-chip active" onclick="window.dukaanApp.filterFaqs('all', this)">All Questions</button>
+                    <button class="filter-chip" onclick="window.dukaanApp.filterFaqs('timings', this)">⏰ Store Timings</button>
+                    <button class="filter-chip" onclick="window.dukaanApp.filterFaqs('delivery', this)">🚚 Delivery Rules</button>
+                    <button class="filter-chip" onclick="window.dukaanApp.filterFaqs('pricing', this)">🏷️ Prices & Rates</button>
+                    <button class="filter-chip" onclick="window.dukaanApp.filterFaqs('stock', this)">📦 Products & Stock</button>
+                    <button class="filter-chip" onclick="window.dukaanApp.filterFaqs('payment', this)">💳 UPI & Payments</button>
+                    <button class="filter-chip" onclick="window.dukaanApp.filterFaqs('location', this)">📍 Shop Location</button>
+                </div>
+
+                <!-- FAQ Card List Container -->
+                <div class="faq-list" id="faq-list-container">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Tab 2: WhatsApp Chat Export Auto-FAQ Generator (Innovation Feature) -->
+            <div id="tab-auto-generator" class="tab-pane">
+                <div class="pane-header">
+                    <div>
+                        <h2 class="pane-title"><i class="fa-solid fa-wand-magic-sparkles" style="color: #FF7A00;"></i> Auto-FAQ Generator</h2>
+                        <p class="pane-desc">Upload a WhatsApp chat export (.txt) with your customers. AI will extract common Q&A patterns automatically with 0 manual typing!</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                        <select id="demo-chat-select" class="form-select" style="padding: 0.45rem 0.75rem; font-size: 0.82rem; width: auto; background: #202C33; border: 1px solid #3B4A54;" onchange="window.dukaanApp.loadSelectedDemoChat(this.value)">
+                            <option value="">📂 Choose Demo Chat to Extract...</option>
+                            <option value="kirana">🛒 Kirana & Grocery Store (Noida)</option>
+                            <option value="pharmacy">💊 Pharmacy & Healthcare (Lucknow)</option>
+                            <option value="hardware">🔧 Hardware & Electricals (Meerut)</option>
+                            <option value="bakery">🎂 Sweets & Bakery Shop (Kanpur)</option>
+                            <option value="mobile_repair">📱 Mobile Repair & Telecom (Aligarh)</option>
+                            <option value="garments">👗 Ethnic Wear Boutique (Jaipur)</option>
+                            <option value="stationery">📚 Stationery & Xerox Print (Dehradun)</option>
+                            <option value="south_indian">🥥 South Indian Provisions (Chennai)</option>
+                        </select>
+                        <button class="btn-secondary" onclick="window.dukaanApp.loadSelectedDemoChat(document.getElementById('demo-chat-select').value || 'kirana')">
+                            <i class="fa-regular fa-file-lines"></i> Load Demo Chat
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-importer-box" id="chat-drop-zone">
+                    <i class="fa-solid fa-cloud-arrow-up chat-upload-icon"></i>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; color: #E9EDEF;">Paste or Drop WhatsApp Chat Export</h3>
+                    <p style="font-size: 0.8rem; color: #8696A0; margin-top: 0.3rem;">Works with standard exported WhatsApp .txt chat logs in Hindi, Hinglish, or English.</p>
+                    
+                    <textarea id="chat-export-input" class="chat-textarea" placeholder="Paste exported WhatsApp chat text here or click 'Load Sample WhatsApp Chat' above..."></textarea>
+                    
+                    <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.75rem;">
+                        <button class="btn-primary" onclick="window.dukaanApp.runAutoFaqExtraction()">
+                            <i class="fa-solid fa-bolt"></i> Run AI Auto-Extraction
+                        </button>
+                        <button class="btn-secondary" onclick="document.getElementById('chat-export-input').value = ''">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Extracted FAQs Preview -->
+                <div id="extracted-faqs-section" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                        <h3 style="font-size: 1rem; color: #25D366; font-weight: 700;">
+                            <i class="fa-solid fa-circle-check"></i> Extracted <span id="extracted-count">0</span> New FAQs
+                        </h3>
+                        <button class="btn-primary" onclick="window.dukaanApp.importAllExtractedFaqs()">
+                            <i class="fa-solid fa-file-import"></i> Approve & Add All to Knowledge Base
+                        </button>
+                    </div>
+                    <div class="extracted-faq-grid" id="extracted-faqs-list">
+                        <!-- Extracted items inserted dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Fallback & Unresolved Queries Inbox -->
+            <div id="tab-fallback-inbox" class="tab-pane">
+                <div class="pane-header">
+                    <div>
+                        <h2 class="pane-title"><i class="fa-solid fa-triangle-exclamation" style="color: #FF7A00;"></i> Owner Fallback Inbox</h2>
+                        <p class="pane-desc">Questions the AI could not confidently answer. You can reply directly on WhatsApp and save answers as new FAQs.</p>
+                    </div>
+                </div>
+
+                <div id="fallback-list-container">
+                    <!-- Populated dynamically -->
+                    <div id="no-fallback-placeholder" style="text-align: center; padding: 3rem 1rem; color: #8696A0;">
+                        <i class="fa-regular fa-circle-check" style="font-size: 3rem; color: #25D366; margin-bottom: 0.8rem;"></i>
+                        <h3 style="font-size: 1.1rem; color: #E9EDEF;">Inbox is Clear!</h3>
+                        <p style="font-size: 0.85rem; margin-top: 0.3rem;">Try asking an unlisted question in the simulator on the right to see the fallback forward alert.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Store Business Rules & Configuration -->
+            <div id="tab-store-profile" class="tab-pane">
+                <div class="pane-header">
+                    <div>
+                        <h2 class="pane-title"><i class="fa-solid fa-store" style="color: #25D366;"></i> Store Profile & Rules</h2>
+                        <p class="pane-desc">Core parameters used by the RAG bot to personalize customer answers.</p>
+                    </div>
+                    <button class="btn-primary" onclick="window.dukaanApp.saveStoreRules()">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Rules
+                    </button>
+                </div>
+
+                <form id="store-rules-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Shop Name</label>
+                            <input type="text" id="rule-shop-name" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Owner Name</label>
+                            <input type="text" id="rule-owner-name" class="form-input">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number (WhatsApp)</label>
+                            <input type="text" id="rule-phone" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">UPI ID / Payment Link</label>
+                            <input type="text" id="rule-upi" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Store Operating Hours</label>
+                        <input type="text" id="rule-timings" class="form-input">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Min. Order for Free Delivery</label>
+                            <input type="text" id="rule-min-delivery" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Delivery Radius</label>
+                            <input type="text" id="rule-radius" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Avg. Delivery Time</label>
+                            <input type="text" id="rule-delivery-time" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Complete Shop Address & Landmark</label>
+                        <input type="text" id="rule-address" class="form-input">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 5: Analytics -->
+            <div id="tab-analytics" class="tab-pane">
+                <div class="pane-header">
+                    <div>
+                        <h2 class="pane-title"><i class="fa-solid fa-chart-line" style="color: #25D366;"></i> Bot Performance & Insights</h2>
+                        <p class="pane-desc">Real-time statistics of queries resolved by DukaanDost AI.</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-total-queries">142</div>
+                        <div class="stat-label">Total Inquiries</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" style="color: #25D366;">94.2%</div>
+                        <div class="stat-label">AI Resolution Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" style="color: #53BDEB;">58%</div>
+                        <div class="stat-label">Voice Notes %</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" style="color: #FF7A00;" id="stat-fallback-count">3</div>
+                        <div class="stat-label">Owner Fallbacks</div>
+                    </div>
+                </div>
+
+                <div style="background: #182229; border: 1px solid var(--border-dark); border-radius: 12px; padding: 1.2rem; margin-top: 1rem;">
+                    <h4 style="font-size: 0.95rem; color: #E9EDEF; margin-bottom: 0.8rem;">Top Inquired Topics (This Week)</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.82rem;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                                <span>🥛 Dairy & Milk availability</span>
+                                <span style="font-weight: bold; color: #25D366;">38%</span>
+                            </div>
+                            <div style="height: 6px; background: #202C33; border-radius: 3px; overflow: hidden;">
+                                <div style="height: 100%; width: 38%; background: #25D366;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                                <span>⏰ Store Timings & Sunday Off</span>
+                                <span style="font-weight: bold; color: #53BDEB;">27%</span>
+                            </div>
+                            <div style="height: 6px; background: #202C33; border-radius: 3px; overflow: hidden;">
+                                <div style="height: 100%; width: 27%; background: #53BDEB;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                                <span>🚚 Home Delivery charges & time</span>
+                                <span style="font-weight: bold; color: #FF7A00;">22%</span>
+                            </div>
+                            <div style="height: 6px; background: #202C33; border-radius: 3px; overflow: hidden;">
+                                <div style="height: 100%; width: 22%; background: #FF7A00;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                                <span>🏷️ Atta & Cooking Oil prices</span>
+                                <span style="font-weight: bold; color: #AEC1CC;">13%</span>
+                            </div>
+                            <div style="height: 6px; background: #202C33; border-radius: 3px; overflow: hidden;">
+                                <div style="height: 100%; width: 13%; background: #AEC1CC;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Interactive WhatsApp Smartphone Mockup (Customer View) -->
+        <section class="phone-mockup-wrapper">
+            <div class="phone-device">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <!-- Status Bar -->
+                    <div class="phone-status-bar">
+                        <span id="phone-clock">09:41</span>
+                        <div style="display: flex; gap: 0.4rem; align-items: center;">
+                            <i class="fa-solid fa-signal"></i>
+                            <i class="fa-solid fa-wifi"></i>
+                            <i class="fa-solid fa-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp Header -->
+                    <div class="wa-header">
+                        <div class="wa-profile-info">
+                            <i class="fa-solid fa-arrow-left" style="font-size: 0.9rem; margin-right: 0.2rem;"></i>
+                            <div class="wa-avatar-wrap">
+                                <img id="wa-header-avatar" class="wa-avatar" src="" alt="Shop Avatar">
+                                <span class="wa-online-dot"></span>
+                            </div>
+                            <div>
+                                <div class="wa-shop-name">
+                                    <span id="wa-header-name">Sharma Kirana</span>
+                                    <i class="fa-solid fa-circle-check verified-badge" title="Verified Business"></i>
+                                </div>
+                                <div class="wa-status-text">
+                                    <span style="color: #25D366; font-weight: bold;">●</span> DukaanDost AI Voice Bot
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wa-header-actions">
+                            <i class="fa-solid fa-phone" title="Voice Call Bot" onclick="window.dukaanApp.simulateVoiceCall()"></i>
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+
+                    <!-- Active Recording Overlay Banner -->
+                    <div id="recording-overlay" class="recording-active-bar">
+                        <div class="rec-pulse-indicator">
+                            <span class="rec-dot"></span>
+                            <span>Recording Audio... <span id="voice-timer-display">0:00</span></span>
+                        </div>
+                        <button style="background: #EF4444; color: #fff; border: none; padding: 0.25rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;" onclick="window.dukaanApp.stopVoiceRecording()">
+                            Send <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+
+                    <!-- Chat Messages Scrollable Container -->
+                    <div class="wa-messages-container" id="wa-messages-container">
+                        <!-- Welcome message initialized by JS -->
+                    </div>
+
+                    <!-- Quick Suggestion Chips for Fast Testing -->
+                    <div class="quick-chips-bar" id="quick-chips-bar">
+                        <button class="chip-btn" onclick="window.dukaanApp.sendQuickPrompt('Dukaan khulne ka time kya hai?')">⏰ Timings?</button>
+                        <button class="chip-btn" onclick="window.dukaanApp.sendQuickPrompt('Amul milk aur butter available hai?')">🥛 Milk & Butter?</button>
+                        <button class="chip-btn" onclick="window.dukaanApp.sendQuickPrompt('Home delivery mil jayegi kya?')">🚚 Home Delivery?</button>
+                        <button class="chip-btn" onclick="window.dukaanApp.sendQuickPrompt('UPI / Google Pay payment chalta hai?')">💳 Google Pay / UPI?</button>
+                        <button class="chip-btn" onclick="window.dukaanApp.sendQuickPrompt('Atta 10kg ka rate kya hai?')">🏷️ Atta Price?</button>
+                    </div>
+
+                    <!-- WhatsApp Input Bar -->
+                    <div class="wa-input-container">
+                        <div class="wa-input-box">
+                            <button class="wa-action-icon"><i class="fa-regular fa-face-smile"></i></button>
+                            <input type="text" id="wa-text-input" class="wa-text-input" placeholder="Type a message or hold mic to speak..." onkeydown="if(event.key === 'Enter') window.dukaanApp.sendTextMessage()">
+                            <button class="wa-action-icon" onclick="window.dukaanApp.sendTextMessage()"><i class="fa-solid fa-paper-plane" style="color: #075E54;"></i></button>
+                        </div>
+                        <button id="wa-mic-btn" class="wa-mic-btn" title="Tap to Record Voice Note in Hindi / Local Language" onclick="window.dukaanApp.toggleVoiceRecording()">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Add / Edit FAQ -->
+    <div id="faq-modal" class="modal-backdrop">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                <h3 id="faq-modal-title" style="font-size: 1.2rem; color: #E9EDEF; font-weight: 700;">Add FAQ to Knowledge Base</h3>
+                <button class="btn-icon" onclick="window.dukaanApp.closeFaqModal()"><i class="fa-solid fa-xmark" style="font-size: 1.2rem;"></i></button>
+            </div>
+            <form id="faq-form" onsubmit="event.preventDefault(); window.dukaanApp.saveFaqFromModal();">
+                <input type="hidden" id="modal-faq-id">
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select id="modal-faq-category" class="form-select">
+                        <option value="timings">⏰ Store Timings</option>
+                        <option value="delivery">🚚 Delivery & Shipping</option>
+                        <option value="pricing">🏷️ Price & Rates</option>
+                        <option value="stock">📦 Products & Stock Availability</option>
+                        <option value="payment">💳 UPI & Payment Methods</option>
+                        <option value="location">📍 Shop Location & Address</option>
+                        <option value="general">ℹ️ General FAQ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Customer Question (Hinglish / English)</label>
+                    <input type="text" id="modal-faq-question" class="form-input" placeholder="e.g. Dukaan kitne baje khulti hai?" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Customer Question (हिंदी - Optional)</label>
+                    <input type="text" id="modal-faq-question-hi" class="form-input" placeholder="उदा: दुकान कितने बजे खुलती है?">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Shopkeeper Answer (Hinglish / English)</label>
+                    <textarea id="modal-faq-answer" class="form-textarea" rows="3" placeholder="e.g. Hamari dukaan subah 7:30 AM se raat 10:30 PM tak khuli rehti hai." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Shopkeeper Answer (हिंदी - Optional)</label>
+                    <textarea id="modal-faq-answer-hi" class="form-textarea" rows="2" placeholder="उदा: हमारी दुकान सुबह 7:30 बजे से रात 10:30 बजे तक खुली रहती है।"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Keywords (Comma separated)</label>
+                    <input type="text" id="modal-faq-keywords" class="form-input" placeholder="e.g. timing, open, close, samay, khuli">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="window.dukaanApp.closeFaqModal()">Cancel</button>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Save FAQ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/sample_data.js"></script>
+    <script src="js/rag_engine.js"></script>
+    <script src="js/voice_handler.js"></script>
+    <script src="js/chat_parser.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
